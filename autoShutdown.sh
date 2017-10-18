@@ -1,4 +1,3 @@
-finlay_macrae@instance-1:~$ cat autoShutdown.sh 
 #!/bin/sh
 if [ -f keepRunning.txt ]; then
   echo 'flag to keep running is still there so no need to shutdown check'
