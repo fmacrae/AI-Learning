@@ -22,7 +22,7 @@ mkdir ~/.sagemaker
 cp ~/deepracer/config.yaml ~/.sagemaker
 
 #chuck this into your .profile and source it
-cp ~/deepracer/rl_coach/env_vars.json ~/env_vars.json
+cp ~/deepracer/rl_coach/env_vars.json ~/deepracer/env_vars.json
 echo "export LOCAL_ENV_VAR_JSON_PATH=$(readlink -f ./env_vars.json)" >> ~/.profile
 source ~/.profile
 
