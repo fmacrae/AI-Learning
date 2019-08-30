@@ -1,8 +1,8 @@
-
 #!/usr/bin/env python
 # coding: utf-8
 
 
+import sagemaker
 import boto3
 import sys
 import os
@@ -12,6 +12,7 @@ import subprocess
 from time import gmtime, strftime
 sys.path.append("common")
 from misc import get_execution_role, wait_for_s3_object
+from sagemaker.rl import RLEstimator, RLToolkit, RLFramework
 from markdown_helper import *
 
 # S3 bucket
