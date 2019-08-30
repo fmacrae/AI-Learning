@@ -72,7 +72,8 @@ source ~/deepracer/rl_coach/env.sh; ./minio server data &
 #create bucket
 #upload the two files using keys to look like folder
 wget https://raw.githubusercontent.com/fmacrae/AI-Learning/master/s3DeepracerBucketCreate.py
-python3 s3DeepracerBucketCreate.py
+source ~/sagemaker_venv/bin/activate
+python s3DeepracerBucketCreate.py
 
 
 
