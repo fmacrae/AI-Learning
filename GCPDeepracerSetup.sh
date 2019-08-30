@@ -1,3 +1,4 @@
+#!/bin/bash
 
 #install virtual env
 sudo apt-get  --yes install python3-venv
