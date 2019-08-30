@@ -1,4 +1,4 @@
-
+apt-get install python3-venv
 #go to your home folder and create a python virtual environment
 cd ~
 python3 -m venv sagemaker_venv
