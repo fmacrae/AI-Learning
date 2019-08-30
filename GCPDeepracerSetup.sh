@@ -86,7 +86,7 @@ echo "#minio launch line"
 echo "source ~/deepracer/rl_coach/env.sh; cd deepracer; ./minio server data &"
 
 echo "#sagemaker lauch line"
-echo "cd deepracer/;  source rl_coach/env.sh; source ~/sagemaker_venv/bin/activate; cd rl_coach; python rl_deepracer_coach_robomaker.py" 
+echo "cd deepracer/rl_coach;  source ./env.sh; source ~/sagemaker_venv/bin/activate; python rl_deepracer_coach_robomaker.py" 
 
 echo "#simulation lauch line"
 echo "source ~/deepracer/rl_coach/env.sh;"
