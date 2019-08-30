@@ -11,9 +11,6 @@ import re
 import subprocess
 from time import gmtime, strftime
 sys.path.append("common")
-from misc import get_execution_role, wait_for_s3_object
-from sagemaker.rl import RLEstimator, RLToolkit, RLFramework
-from markdown_helper import *
 
 # S3 bucket
 boto_session = boto3.session.Session(
@@ -23,13 +20,19 @@ boto_session = boto3.session.Session(
 s3Client = boto_session.resource("s3", use_ssl=False,
 endpoint_url=os.environ.get("S3_ENDPOINT_URL", "http://127.0.0.1:9000"))
 
-s3Client.create_bucket(Bucket='bucket')
-
+try:
+    s3Client.create_bucket(Bucket='bucket')
+except:
+    print("ERROR  oops bucket creation error may have to do manually")
 filename1 = 'model_metadata.json'
 filename2 = 'reward.py'
 bucket_name = 'bucket'
 
 # Uploads the given file using a managed uploader, which will split up large
 # files automatically and upload parts in parallel.
-s3Client.upload_file('~/deepracer/custom_files/'+filename1, bucket_name, '/custom_files/'+filename1)
-s3Client.upload_file('~/deepracer/custom_files/'+filename2, bucket_name, '/custom_files/'+filename2)
+try:
+
+    s3Client.meta.client.upload_file('custom_files/'+filename1, bucket_name, 'custom_files/'+filename1)
+    s3Client.meta.client.upload_file('custom_files/'+filename2, bucket_name, 'custom_files/'+filename2)
+except:
+    print("ERROR   copy of custom_files errored to the bucket check and do manually")
