@@ -1,6 +1,6 @@
 
 #install virtual env
-sudo apt-get  --yes --force-yes install python3-venv
+sudo apt-get  --yes install python3-venv
 #go to your home folder and create a python virtual environment
 cd ~
 python3 -m venv sagemaker_venv
@@ -11,17 +11,17 @@ docker pull crr0004/sagemaker-rl-tensorflow:console
 
 # pull the main repo
 git clone --recurse-submodules https://github.com/crr0004/deepracer.git
-source deepracer/rl_coach/env.sh
+source source ~/deepracer/rl_coach/env.sh
 
 #pull the extra fun stuff for log analysis etc
 git clone https://github.com/aws-samples/aws-deepracer-workshops.git
 
 #copy the files to where they need to be:
 mkdir ~/.sagemaker
-cp deepracer/config.yaml ~/.sagemaker
+cp ~/deepracer/config.yaml ~/.sagemaker
 
 #chuck this into your .profile and source it
-cp deepracer/rl_coach/env_vars.json ~
+cp ~/deepracer/rl_coach/env_vars.json ~/env_vars.json
 echo "export LOCAL_ENV_VAR_JSON_PATH=$(readlink -f ./env_vars.json)" >> ~/.profile
 source ~/.profile
 
@@ -36,6 +36,7 @@ pip install pandas
 pip uninstall urllib3
 pip install --upgrade "urllib3==1.22" awscli
 pip install 'PyYAML==3.13'
+pip install boto3
 
 #now setup for docker GPU
 
@@ -46,9 +47,9 @@ curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.li
 
 #then add docker2
 sudo apt-get update
-sudo apt-get  --yes --force-yes  --only-upgrade install docker-ce nvidia-docker2
+sudo apt-get  --yes  --only-upgrade install docker-ce nvidia-docker2
 sudo systemctl restart docker
-sudo apt-get update && sudo apt-get  --yes --force-yes  install -y nvidia-container-toolkit
+sudo apt-get update && sudo apt-get  --yes  install -y nvidia-container-toolkit
 sudo systemctl restart docker
 
 #check docker still works
@@ -63,7 +64,7 @@ sed -i 's/#export LOCAL_EXTRA_DOCKER_COMPOSE_PATH/export LOCAL_EXTRA_DOCKER_COMP
 #pull down minio into the deepracer folder and launch it as a background process
 wget https://dl.min.io/server/minio/release/linux-amd64/minio
 chmod +x minio
-./minio server data &
+source ~/deepracer/rl_coach/env.sh; ./minio server data &
 
 #connect to minio
 #create bucket
@@ -79,11 +80,12 @@ wget https://raw.githubusercontent.com/fmacrae/AI-Learning/master/autoShutdown.s
 echo "have a look at autoShutdown.sh and add to your crontab if you want to script auto shutdown"
 
 echo "#minio launch line"
-echo "source deepracer/rl_coach/env.sh; cd deepracer; ./minio server data &"
+echo "source ~/deepracer/rl_coach/env.sh; cd deepracer; ./minio server data &"
 
 echo "#sagemaker lauch line"
+echo "source ~/deepracer/rl_coach/env.sh;"
 echo "cd deepracer/;  source rl_coach/env.sh; cd rl_coach; python rl_deepracer_coach_robomaker.py" 
 
 echo "#simulation lauch line"
-echo "source deepracer/rl_coach/env.sh;"
+echo "source ~/deepracer/rl_coach/env.sh;"
 echo "docker run --rm --name dr --env-file ./robomaker.env --network sagemaker-local -p 8081:5900 -it crr0004/deepracer_robomaker:console"
