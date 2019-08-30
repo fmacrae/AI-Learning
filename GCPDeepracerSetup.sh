@@ -5,14 +5,14 @@ sudo apt-get  --yes install python3-venv
 #go to your home folder and create a python virtual environment
 cd ~
 python3 -m venv sagemaker_venv
-source sagemaker_venv/bin/activate
+source ~/sagemaker_venv/bin/activate
 
 #pull down the docker
 docker pull crr0004/sagemaker-rl-tensorflow:console 
 
 # pull the main repo
 git clone --recurse-submodules https://github.com/crr0004/deepracer.git
-source source ~/deepracer/rl_coach/env.sh
+source ~/deepracer/rl_coach/env.sh
 
 #pull the extra fun stuff for log analysis etc
 git clone https://github.com/aws-samples/aws-deepracer-workshops.git
@@ -27,6 +27,7 @@ echo "export LOCAL_ENV_VAR_JSON_PATH=$(readlink -f ./env_vars.json)" >> ~/.profi
 source ~/.profile
 
 # nip into the deepracer directory and install sagemaker sdk
+source ~/sagemaker_venv/bin/activate
 cd deepracer
 pip install -U sagemaker-python-sdk/
 
@@ -84,8 +85,7 @@ echo "#minio launch line"
 echo "source ~/deepracer/rl_coach/env.sh; cd deepracer; ./minio server data &"
 
 echo "#sagemaker lauch line"
-echo "source ~/deepracer/rl_coach/env.sh;"
-echo "cd deepracer/;  source rl_coach/env.sh; cd rl_coach; python rl_deepracer_coach_robomaker.py" 
+echo "cd deepracer/;  source rl_coach/env.sh; source ~/sagemaker_venv/bin/activate; cd rl_coach; python rl_deepracer_coach_robomaker.py" 
 
 echo "#simulation lauch line"
 echo "source ~/deepracer/rl_coach/env.sh;"
