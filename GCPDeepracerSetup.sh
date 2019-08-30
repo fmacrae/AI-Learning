@@ -1,31 +1,3 @@
-Follow instructions from https://course.fast.ai/start_gcp.html
-
-
-#Use this instead  - 
-export IMAGE_FAMILY="tf-latest-gpu" 
-export ZONE="us-west1-b" 
-export INSTANCE_NAME="my-deepracer-instance"
-export INSTANCE_TYPE="n1-highmem-8" # budget: "n1-highmem-4"
-gcloud compute instances create $INSTANCE_NAME \
-        --zone=$ZONE \
-        --image-family=$IMAGE_FAMILY \
-        --image-project=deeplearning-platform-release \
-        --maintenance-policy=TERMINATE \
-        --accelerator="type=nvidia-tesla-k80,count=1" \
-        --machine-type=$INSTANCE_TYPE \
-        --boot-disk-size=200GB \
-        --metadata="install-nvidia-driver=True" \
-        --preemptible
-
-
-#Firewall open ports 9000, 8080, 6379, 8081, 5800, 5901
-
-
-# Connect to GCP
-gcloud beta compute --project "udacity-training-181315" ssh --zone "us-west1-b" "my-deepracer-instance"
-
-# Install VNC and Gnome if you want to
-https://medium.com/google-cloud/linux-gui-on-the-google-cloud-platform-800719ab27c5
 
 #go to your home folder and create a python virtual environment
 cd ~
