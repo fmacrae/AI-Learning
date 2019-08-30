@@ -1,6 +1,6 @@
 
 #install virtual env
-sudo apt-get install python3-venv
+sudo apt-get  --yes --force-yes install python3-venv
 #go to your home folder and create a python virtual environment
 cd ~
 python3 -m venv sagemaker_venv
@@ -46,9 +46,9 @@ curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.li
 
 #then add docker2
 sudo apt-get update
-sudo apt-get --only-upgrade install docker-ce nvidia-docker2
+sudo apt-get  --yes --force-yes  --only-upgrade install docker-ce nvidia-docker2
 sudo systemctl restart docker
-sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
+sudo apt-get update && sudo apt-get  --yes --force-yes  install -y nvidia-container-toolkit
 sudo systemctl restart docker
 
 #check docker still works
