@@ -91,12 +91,12 @@ wget https://raw.githubusercontent.com/fmacrae/AI-Learning/master/autoShutdown.s
 
 echo "have a look at autoShutdown.sh and add to your crontab if you want to script auto shutdown"
 
-echo "#minio launch line"
+echo "#minio launch line - access the minio front end on port 9000 uing username minio and password miniokey"
 echo "source ~/deepracer/rl_coach/env.sh; cd deepracer; ./minio server data &"
 
-echo "#sagemaker lauch line"
+echo "#sagemaker launch line"
 echo "cd ~/deepracer/rl_coach;  source ./env.sh; source ~/sagemaker_venv/bin/activate; python rl_deepracer_coach_robomaker.py" 
 
-echo "#simulation lauch line"
+echo "#simulation launch line - access gazeebo to view the robot training via VNC on port 8081"
 echo "source ~/deepracer/rl_coach/env.sh; cd ~/deepracer"
 echo "docker run --rm --name dr --env-file ./robomaker.env --network sagemaker-local -p 8081:5900 -it crr0004/deepracer_robomaker:console"
