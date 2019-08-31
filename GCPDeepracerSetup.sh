@@ -11,13 +11,15 @@ source ~/sagemaker_venv/bin/activate
 docker pull crr0004/sagemaker-rl-tensorflow:console 
 docker pull crr0004/deepracer_robomaker:console
 
-# pull the main repo
-git clone --recurse-submodules https://github.com/crr0004/deepracer.git
-source ~/deepracer/rl_coach/env.sh
-
 #pull the extra fun stuff for log analysis etc
 git clone https://github.com/aws-samples/aws-deepracer-workshops.git
 
+# pull the main repo
+git clone --recurse-submodules https://github.com/crr0004/deepracer.git
+cd deepracer
+source rl_coach/env.sh
+
+cd ~
 #copy the files to where they need to be:
 mkdir ~/.sagemaker
 mv ~/deepracer/config.yaml ~/.sagemaker
@@ -31,15 +33,18 @@ source ~/sagemaker_venv/bin/activate
 cd deepracer
 
 pip install --upgrade pip
-#throw down some pip installs so your virtual env is chock full of goodness and correct some of the libraries that get wonky
 pip install wheel 
-pip install awscli
-pip install pandas
-#pip uninstall urllib3
-pip install -U sagemaker-python-sdk/
-pip install --upgrade "urllib3==1.22" awscli
-pip install 'PyYAML==3.13'
 pip install boto3
+pip install -U sagemaker-python-sdk/ awscli pandas
+
+#throw down some pip installs so your virtual env is chock full of goodness and correct some of the libraries that get wonky
+#pip install awscli
+#pip install pandas
+#pip uninstall urllib3
+#pip install -U sagemaker-python-sdk/
+#pip install --upgrade "urllib3==1.22" awscli
+#pip install 'PyYAML==3.13'
+
 
 #now setup for docker GPU
 
@@ -72,6 +77,7 @@ source ~/deepracer/rl_coach/env.sh; ./minio server data &
 #connect to minio
 #create bucket
 #upload the two files using keys to look like folder
+cd rl_coach
 wget https://raw.githubusercontent.com/fmacrae/AI-Learning/master/s3DeepracerBucketCreate.py
 source ~/sagemaker_venv/bin/activate
 python s3DeepracerBucketCreate.py
@@ -87,7 +93,7 @@ echo "#minio launch line"
 echo "source ~/deepracer/rl_coach/env.sh; cd deepracer; ./minio server data &"
 
 echo "#sagemaker lauch line"
-echo "cd deepracer;  source rl_coach/env.sh; source ~/sagemaker_venv/bin/activate; python rl_coach/rl_deepracer_coach_robomaker.py" 
+echo "cd ~/deepracer/rl_coach;  source ./env.sh; source ~/sagemaker_venv/bin/activate; python rl_deepracer_coach_robomaker.py" 
 
 echo "#simulation lauch line"
 echo "source ~/deepracer/rl_coach/env.sh;"
