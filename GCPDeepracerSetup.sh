@@ -100,3 +100,9 @@ echo "cd ~/deepracer/rl_coach;  source ./env.sh; source ~/sagemaker_venv/bin/act
 echo "#simulation launch line - access gazeebo to view the robot training via VNC on port 8081"
 echo "source ~/deepracer/rl_coach/env.sh; cd ~/deepracer"
 echo "docker run --rm --name dr --env-file ./robomaker.env --network sagemaker-local -p 8081:5900 -it crr0004/deepracer_robomaker:console"
+
+echo "#jupyter notebook launch line for log analysis - connect on port 8888 with the key it prints out"
+echo "jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &"
+
+echo "make sure you opened ports - Nip into VPC Network - Firewall Rules and open TCP ports 9000, 8080, 8888, 6379, 8081, 5800, 5901"
+
