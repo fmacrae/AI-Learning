@@ -23,8 +23,7 @@ mkdir ~/.sagemaker
 mv ~/deepracer/config.yaml ~/.sagemaker
 
 #chuck this into your .profile and source it
-mv ~/deepracer/rl_coach/env_vars.json ~/deepracer/env_vars.json
-echo "export LOCAL_ENV_VAR_JSON_PATH=$(readlink -f deepracer/env_vars.json)" >> ~/.profile
+echo "export LOCAL_ENV_VAR_JSON_PATH=$(readlink -f deepracer/rl_coach/env_vars.json)" >> ~/.profile
 source ~/.profile
 
 # nip into the deepracer directory and install sagemaker sdk
