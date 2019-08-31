@@ -29,13 +29,14 @@ source ~/.profile
 # nip into the deepracer directory and install sagemaker sdk
 source ~/sagemaker_venv/bin/activate
 cd deepracer
-pip install -U sagemaker-python-sdk/
 
+pip install --upgrade pip
 #throw down some pip installs so your virtual env is chock full of goodness and correct some of the libraries that get wonky
-pip install wheel
+pip install wheel 
 pip install awscli
 pip install pandas
-pip uninstall urllib3
+#pip uninstall urllib3
+pip install -U sagemaker-python-sdk/
 pip install --upgrade "urllib3==1.22" awscli
 pip install 'PyYAML==3.13'
 pip install boto3
