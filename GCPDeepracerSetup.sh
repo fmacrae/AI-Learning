@@ -7,8 +7,9 @@ cd ~
 python3 -m venv sagemaker_venv
 source ~/sagemaker_venv/bin/activate
 
-#pull down the docker
+#pull down the docker images needed
 docker pull crr0004/sagemaker-rl-tensorflow:console 
+docker pull crr0004/deepracer_robomaker:console
 
 # pull the main repo
 git clone --recurse-submodules https://github.com/crr0004/deepracer.git
@@ -19,10 +20,10 @@ git clone https://github.com/aws-samples/aws-deepracer-workshops.git
 
 #copy the files to where they need to be:
 mkdir ~/.sagemaker
-cp ~/deepracer/config.yaml ~/.sagemaker
+mv ~/deepracer/config.yaml ~/.sagemaker
 
 #chuck this into your .profile and source it
-cp ~/deepracer/rl_coach/env_vars.json ~/deepracer/env_vars.json
+mv ~/deepracer/rl_coach/env_vars.json ~/deepracer/env_vars.json
 echo "export LOCAL_ENV_VAR_JSON_PATH=$(readlink -f deepracer/env_vars.json)" >> ~/.profile
 source ~/.profile
 
