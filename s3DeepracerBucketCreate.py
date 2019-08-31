@@ -31,8 +31,10 @@ bucket_name = 'bucket'
 # Uploads the given file using a managed uploader, which will split up large
 # files automatically and upload parts in parallel.
 try:
-
-    s3Client.meta.client.upload_file('custom_files/'+filename1, bucket_name, 'custom_files/'+filename1)
-    s3Client.meta.client.upload_file('custom_files/'+filename2, bucket_name, 'custom_files/'+filename2)
+    s3Client.meta.client.upload_file('../custom_files/'+filename1, bucket_name, 'custom_files/'+filename1)
 except:
-    print("ERROR   copy of custom_files errored to the bucket check and do manually")
+    print("ERROR " + filename1 + "  copy of custom_files errored to the bucket check and do manually")
+try:
+    s3Client.meta.client.upload_file('../custom_files/'+filename2, bucket_name, 'custom_files/'+filename2)
+except:
+    print("ERROR " + filename2 + "  copy of custom_files errored to the bucket check and do manually")
