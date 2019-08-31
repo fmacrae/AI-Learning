@@ -98,5 +98,5 @@ echo "#sagemaker lauch line"
 echo "cd ~/deepracer/rl_coach;  source ./env.sh; source ~/sagemaker_venv/bin/activate; python rl_deepracer_coach_robomaker.py" 
 
 echo "#simulation lauch line"
-echo "source ~/deepracer/rl_coach/env.sh;"
+echo "source ~/deepracer/rl_coach/env.sh; cd ~/deepracer"
 echo "docker run --rm --name dr --env-file ./robomaker.env --network sagemaker-local -p 8081:5900 -it crr0004/deepracer_robomaker:console"
