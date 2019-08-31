@@ -22,6 +22,8 @@ source rl_coach/env.sh
 cd ~
 #copy the files to where they need to be:
 mkdir ~/.sagemaker
+mkdir robo
+mkdir robo/container
 mv ~/deepracer/config.yaml ~/.sagemaker
 
 #chuck this into your .profile and source it
