@@ -1,0 +1,27 @@
+Follow instructions from https://course.fast.ai/start_gcp.html 
+but when you get to step 3 use these instructions:
+#Use this instead of the fast AI image - 
+export IMAGE_FAMILY="tf-latest-gpu" 
+export ZONE="us-west1-b" 
+export INSTANCE_NAME="my-deepracer-instance-test"
+export INSTANCE_TYPE="n1-highmem-8" # budget: "n1-highmem-4"
+gcloud compute instances create $INSTANCE_NAME \
+        --zone=$ZONE \
+        --image-family=$IMAGE_FAMILY \
+        --image-project=deeplearning-platform-release \
+        --maintenance-policy=TERMINATE \
+        --accelerator="type=nvidia-tesla-k80,count=1" \
+        --machine-type=$INSTANCE_TYPE \
+        --boot-disk-size=200GB \
+        --metadata="install-nvidia-driver=True" \
+        --preemptible
+#Nip into VPC Network - Firewall Rules and open ports 9000, 8080, 6379, 8081, 5800, 5901
+#connect via ssh (after about 5 mins to let it build) then run:
+wget https://raw.githubusercontent.com/fmacrae/AI-Learning/master/GCPDeepracerSetup.sh
+bash GCPDeepracerSetup.sh
+It should install everything then give you the three sets of commands you need to run it
+For the first time minio is already running so you can skip that line.
+Second set of commands run sagemaker
+Open another terminal /ssh connection to run the third set of commands
+You can then monitor the gazeebo on port 8081 via VNC
+Feed back if you have any issues.  I've tested it a few times and seems to work OK.
