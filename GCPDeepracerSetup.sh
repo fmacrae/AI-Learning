@@ -66,7 +66,8 @@ sudo systemctl restart docker
 docker run --gpus all nvidia/cuda:9.0-base nvidia-smi
 
 #modify rl_deepracer_coach_robomaker.py instance_type to local_gpu
-sed -i 's/local-gpu/local_gpu/g' ~/deepracer/rl_coach/rl_deepracer_coach_robomaker.py
+sed -i 's/"local"/"local_gpu"/g' ~/deepracer/rl_coach/rl_deepracer_coach_robomaker.py
+
 
 #uncommment the line in env.sh that is #export LOCAL_EXTRA_DOCKER_COMPOSE_PATH=$(readlink -f ./docker_compose_extra.json)
 sed -i 's/#export LOCAL_EXTRA_DOCKER_COMPOSE_PATH/export LOCAL_EXTRA_DOCKER_COMPOSE_PATH/g' ~/deepracer/rl_coach/env.sh
