@@ -67,6 +67,11 @@ docker run --gpus all nvidia/cuda:9.0-base nvidia-smi
 
 #modify rl_deepracer_coach_robomaker.py instance_type to local_gpu
 sed -i 's/"local"/"local_gpu"/g' ~/deepracer/rl_coach/rl_deepracer_coach_robomaker.py
+#modify to use the nvidia sagemaker container
+sed -i 's/"crr0004/sagemaker-rl-tensorflow:console_v1.1"/"crr0004/sagemaker-rl-tensorflow:nvidia"/g' ~/deepracer/rl_coach/rl_deepracer_coach_robomaker.py
+#modify the docker_compose_extra.json file back to old defaults
+#TODO
+
 
 
 #uncommment the line in env.sh that is #export LOCAL_EXTRA_DOCKER_COMPOSE_PATH=$(readlink -f ./docker_compose_extra.json)
