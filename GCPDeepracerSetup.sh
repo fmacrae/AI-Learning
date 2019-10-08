@@ -38,6 +38,7 @@ pip install --upgrade pip
 pip install wheel 
 pip install boto3
 pip install -U sagemaker-python-sdk/ awscli pandas
+pip install tensorflow-gpu
 
 #now setup for docker GPU
 
