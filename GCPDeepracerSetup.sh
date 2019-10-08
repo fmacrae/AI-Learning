@@ -8,8 +8,8 @@ python3 -m venv sagemaker_venv
 source ~/sagemaker_venv/bin/activate
 
 #pull down the docker images needed
-docker pull crr0004/sagemaker-rl-tensorflow:console 
-docker pull crr0004/deepracer_robomaker:console
+docker pull crr0004/sagemaker-rl-tensorflow:console_v1.1
+docker pull crr0004/deepracer_robomaker:console_v1.1
 
 #pull the extra fun stuff for log analysis etc
 git clone https://github.com/aws-samples/aws-deepracer-workshops.git
@@ -39,15 +39,6 @@ pip install wheel
 pip install boto3
 pip install -U sagemaker-python-sdk/ awscli pandas
 
-#throw down some pip installs so your virtual env is chock full of goodness and correct some of the libraries that get wonky
-#pip install awscli
-#pip install pandas
-#pip uninstall urllib3
-#pip install -U sagemaker-python-sdk/
-#pip install --upgrade "urllib3==1.22" awscli
-#pip install 'PyYAML==3.13'
-
-
 #now setup for docker GPU
 
 # Add the package repositories
@@ -68,7 +59,7 @@ docker run --gpus all nvidia/cuda:9.0-base nvidia-smi
 #modify rl_deepracer_coach_robomaker.py instance_type to local_gpu
 sed -i 's/"local"/"local_gpu"/g' ~/deepracer/rl_coach/rl_deepracer_coach_robomaker.py
 #modify to use the nvidia sagemaker container
-sed -i 's/tensorflow:console_v1.1/tensorflow:nvidia/g' ~/deepracer/rl_coach/rl_deepracer_coach_robomaker.py
+sed -i 's/tensorflow:console_v1.1/tensorflow:nvidia_v1.1/g' ~/deepracer/rl_coach/rl_deepracer_coach_robomaker.py
 #modify the docker_compose_extra.json file back to old defaults
 rm ~/deepracer/rl_coach/docker_compose_extra.json
 wget https://raw.githubusercontent.com/fmacrae/AI-Learning/master/docker_compose_extra.json
@@ -105,7 +96,7 @@ echo "cd ~/deepracer/rl_coach;  source ./env.sh; source ~/sagemaker_venv/bin/act
 
 echo "#simulation launch line - access gazeebo to view the robot training via VNC on port 8081"
 echo "source ~/deepracer/rl_coach/env.sh; cd ~/deepracer"
-echo "docker run --rm --name dr --env-file ./robomaker.env --network sagemaker-local -p 8081:5900 -it crr0004/deepracer_robomaker:console"
+echo "docker run --rm --name dr --env-file ./robomaker.env --network sagemaker-local -p 8081:5900 -it crr0004/deepracer_robomaker:console_v1.1"
 
 echo "#jupyter notebook launch line for log analysis - connect on port 8888 with the key it prints out"
 echo "jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &"
