@@ -67,7 +67,7 @@ wget https://raw.githubusercontent.com/fmacrae/AI-Learning/master/docker_compose
 mv docker_compose_extra.json ~/deepracer/rl_coach/docker_compose_extra.json
 
 #modify robomaker.env to use the Track in the default container
-sed -i 's/Mexico_track/China_track/g' ~/deepracer/robomaker.env
+sed -i 's/Mexico_track/Canada_Training/g' ~/deepracer/robomaker.env
 
 #uncommment the line in env.sh that is #export LOCAL_EXTRA_DOCKER_COMPOSE_PATH=$(readlink -f ./docker_compose_extra.json)
 sed -i 's/#export LOCAL_EXTRA_DOCKER_COMPOSE_PATH/export LOCAL_EXTRA_DOCKER_COMPOSE_PATH/g' ~/deepracer/rl_coach/env.sh
@@ -99,7 +99,7 @@ echo "#sagemaker launch line"
 echo "cd ~/deepracer/rl_coach;  source ./env.sh; source ~/sagemaker_venv/bin/activate; python rl_deepracer_coach_robomaker.py" 
 
 echo "#simulation launch line - access gazeebo to view the robot training via VNC on port 8081"
-echo "source ~/deepracer/rl_coach/env.sh; cd ~/deepracer; docker run --rm --name dr --env-file ./robomaker.env --network sagemaker-local -p 8081:5900 -it crr0004/deepracer_robomaker:console"
+echo "source ~/deepracer/rl_coach/env.sh; cd ~/deepracer; docker run -v ~/deepracer/simulation/aws-robomaker-sample-application-deepracer/simulation_ws/src:/app/robomaker-deepracer/simulation_ws/src --rm --name dr --env-file ./robomaker.env --network sagemaker-local -p 8081:5900 -it crr0004/deepracer_robomaker:console"
 
 echo "#jupyter notebook launch line for log analysis - connect on port 8888 with the key it prints out"
 echo "jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser &"
