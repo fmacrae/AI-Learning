@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#install boto and shapely for log analysis
+pip3 install shapely
+pip3 install boto3
+
+
 #install virtual env
 sudo apt-get  --yes install python3-venv
 #go to your home folder and create a python virtual environment
@@ -39,6 +44,7 @@ pip install wheel
 pip install boto3
 pip install -U sagemaker-python-sdk/ awscli pandas
 pip install tensorflow-gpu
+
 
 #now setup for docker GPU
 
