@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #install boto and shapely for log analysis
-pip3 install shapely
-pip3 install boto3
+pip3 install shapely --user
+pip3 install boto3 --user
 
 
 #install virtual env
