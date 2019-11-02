@@ -17,7 +17,8 @@ docker pull crr0004/sagemaker-rl-tensorflow:console
 docker pull crr0004/deepracer_robomaker:console
 
 #pull the extra fun stuff for log analysis etc
-git clone https://github.com/aws-samples/aws-deepracer-workshops.git
+#git clone https://github.com/aws-samples/aws-deepracer-workshops.git
+git clone https://github.com/aws-deepracer-community/aws-deepracer-workshops.git
 
 # pull the main repo
 git clone --recurse-submodules https://github.com/crr0004/deepracer.git
