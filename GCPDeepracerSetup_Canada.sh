@@ -43,8 +43,8 @@ cd deepracer
 pip install --upgrade pip
 pip install wheel 
 pip install boto3
-pip install -U sagemaker-python-sdk/ awscli pandas
-pip install tensorflow-gpu
+pip install -U sagemaker-python-sdk/ awscli ipython pandas "urllib3==1.22" "pyyaml==3.13" "python-dateutil==2.8.0"
+pip install tensorflow-gpu==1.14
 
 
 #now setup for docker GPU
