@@ -92,8 +92,8 @@ def reward_function(params):
             if track_direction2 >= 0:
                 diff= abs(track_direction2) - abs(track_direction1)
         
-        print("diff  %f " %diff)
-        print("waypoint  %d " %ipoint1)
+        #print("diff  %f " %diff)
+        #print("waypoint  %d " %ipoint1)
          
         #store the angle changes at each waypoint
         AngleChanges.append(diff)
@@ -186,16 +186,18 @@ def reward_function(params):
     reward = 1
     #check steering magnitude and direction
     #print(params['steering_angle'])
+    
+    #STEERING_ANGLE -ve is right turn
     #check for low steering
     if abs(params['steering_angle'])>(HARD_TURN_MAG-10):
-        if (TrackCondition[0] >= HARD_RIGHT) and (params['steering_angle']>0):
+        if (TrackCondition[0] >= HARD_RIGHT) and (params['steering_angle']<0):
             reward+=SteerIncentive
         if (TrackCondition[0] <= HARD_LEFT) and (params['steering_angle']>0):
             reward+=SteerIncentive
     
     #Check for heavy steering
     if (abs(params['steering_angle'])>(SOFT_TURN_MAG)) and (abs(params['steering_angle'])<(HARD_TURN_MAG-10)):
-        if (TrackCondition[0] >= SOFT_RIGHT) and (params['steering_angle']>0):
+        if (TrackCondition[0] >= SOFT_RIGHT) and (params['steering_angle']<0):
             reward+=SteerIncentive
         if (TrackCondition[0] <= SOFT_LEFT) and (params['steering_angle']>0):
             reward+=SteerIncentive
@@ -223,12 +225,12 @@ def get_test_params():
     return {
         'x': 0.7,
         'y': 1.05,
-        'is_left_of_center': True,
-        'speed': 0.8,
+        'is_left_of_center': False,
+        'speed': 1.44,
         'heading': 160.0,
         'track_width': 0.45,
         'is_reversed': False,
-        'steering_angle': 0.0,
+        'steering_angle': -30.0,
         'closest_waypoints': [110, 111],
         'waypoints': [[-0.5438075065612793,
   -4.263250946998596,
