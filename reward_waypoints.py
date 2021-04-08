@@ -9,8 +9,8 @@ def reward_function(params):
     HARD_TURN_MAG = 10 #angle to trigger hard turn flag on waypoint
     SOFT_TURN_MAG = 5 #and same for soft
     
-    HARD_STEERING_MAG = 35 #angle to trigger hard turn flag on waypoint
-    SOFT_STEERING_MAG = 20 #and same for soft
+    HARD_STEERING_MAG = 20 #angle to trigger hard steering
+    SOFT_STEERING_MAG = 10 #and same for soft
     
     
     #using 0, 1, 2, 3, 4
@@ -54,16 +54,15 @@ def reward_function(params):
         point2 = waypoints[full_list_of_waypoints[ipoint2]]
         point3 = waypoints[full_list_of_waypoints[ipoint3]]
         
-        #check for duplicate waypoints
+        #check for duplicates
         if (point1[0] == point2[0]) and (point1[1] == point2[1]):
-            #first two dupe so swap point2 for point 3 and grab point4 for point3
+            #swap point2 for point 3 and grab point4 for point3
             point2 = point3
             point3 = waypoints[full_list_of_waypoints[ipoint3 +1]]
         if (point2[0] == point3[0]) and (point2[1] == point3[1]):
-            #second two duped so grab extra point 4 for point 3
+            #grab point 4 for point 3
             point3 = waypoints[full_list_of_waypoints[ipoint3 +1]]
-            
-        #calculate direction of the two lines between the three waypoints
+
         section1_direction = math.atan2(point2[1] - point1[1], point2[0] - point1[0])
         track_direction1 = math.degrees(section1_direction)
         section2_direction = math.atan2(point3[1] - point2[1], point3[0] - point2[0])
@@ -95,10 +94,12 @@ def reward_function(params):
         #print("diff  %f " %diff)
         #print("waypoint  %d " %ipoint1)
          
-        #store the angle changes at each waypoint
+        
         AngleChanges.append(diff)
         #define the category of turn
-        # negative angles are right turns
+        # negative angles are anticlockwise so for the car are left turns
+        # positive are clockwise so right turns
+
         #using 0, 1, 2, 3, 4
         #      HL,SL,S,SR,HR
         if abs(diff) > SOFT_TURN_MAG:
@@ -117,29 +118,27 @@ def reward_function(params):
             
         TrackCondition.append(track_type)
         #print(track_type)        
-    
-    
-    #Use the track conditions to work out the best incentives    
+        
     #set basic reward
-    SpeedIncentive = 1 #Generally want to go fairly fast
+    SpeedIncentive = 0.5 #Generally want to go fairly fast
     SteerIncentive = 0.25 #generally want steering to be low
-    RightIncentive = 0 #no preference
-    LeftIncentive = 0 #no preference
+    RightIncentive = 0
+    LeftIncentive = 0
         
     #straight checker
     #count number of straights ahead
     iStraights = 0
     while TrackCondition[iStraights] == STRAIGHT and (iStraights<waypoints_to_review -1):
         iStraights+=1
-    LONGSTRAIGHT = 8 # This is the number of waypoints that bot sees as a real straight
+    LONGSTRAIGHT = 8
     if iStraights>LONGSTRAIGHT:
         #GO FAST
-        SpeedIncentive = 3
+        SpeedIncentive = 1
         SteerIncentive = 0 #keep straight when fast
     #we're on straight but approaching corner 
     if (iStraights>0) and (iStraights<=LONGSTRAIGHT):
         #start slowing and allow steering
-        SpeedIncentive = 0.8
+        SpeedIncentive = 0.1
         SteerIncentive = 0.5
         #change lane position
         if TrackCondition[iStraights+1] >= SOFT_RIGHT:
@@ -158,8 +157,8 @@ def reward_function(params):
         SteerIncentive = 1
         #about to exit so start powering up
         if TrackCondition[1] == STRAIGHT:
-            SpeedIncentive = 2
-            SteerIncentive = 0.5 #also reduce steering as can adjust on the straight
+            #SpeedIncentive = 2
+            #SteerIncentive = 0.5 #also reduce steering as can adjust on the straight
             if TrackCondition[1] >= SOFT_RIGHT:
                 #move to right of centre
                 RightIncentive = 1
@@ -171,43 +170,33 @@ def reward_function(params):
                 
         
     
-    
-    
-    #now adjust reward down or up based on being in the best state possible for track condition
-    #i.e reward being on left of track if entering a right corner
-    #reward being on right of track if entering a left corner 
-    #reward going slow through and into corners
-    #reward steering in corners
-    #reward going fast on exit of turn if steering is low and on inside
-    #reward going fast and central on straights with low steering
-    
-
     #start with 1 for being on the track - good job
     reward = 1
     #check steering magnitude and direction
-    #print(params['steering_angle'])
+    #print(params['steering_angle']) -ve is right, +ve is left
     
-    #STEERING_ANGLE -ve is right turn
-    #check for low steering
-    if abs(params['steering_angle'])>(HARD_TURN_MAG-10):
+    #
+    if abs(params['steering_angle'])>(HARD_TURN_MAG):
         if (TrackCondition[0] >= HARD_RIGHT) and (params['steering_angle']<0):
             reward+=SteerIncentive
         if (TrackCondition[0] <= HARD_LEFT) and (params['steering_angle']>0):
             reward+=SteerIncentive
     
-    #Check for heavy steering
-    if (abs(params['steering_angle'])>(SOFT_TURN_MAG)) and (abs(params['steering_angle'])<(HARD_TURN_MAG-10)):
+    
+    if (abs(params['steering_angle'])>(SOFT_TURN_MAG)) and (abs(params['steering_angle'])<(HARD_TURN_MAG)):
         if (TrackCondition[0] >= SOFT_RIGHT) and (params['steering_angle']<0):
             reward+=SteerIncentive
         if (TrackCondition[0] <= SOFT_LEFT) and (params['steering_angle']>0):
             reward+=SteerIncentive
     
-    #If no steeringpreferred go for it big on straight
+        
+    #If no steeringpreferred go for it big if straight
     if abs(params['steering_angle'])<SOFT_TURN_MAG:
         if SteerIncentive == 0:
             reward+=1
         
-    #check position on track
+    
+    #check position
     if RightIncentive > 0:
         if params['is_left_of_center'] != True:
             reward+=RightIncentive
@@ -217,6 +206,22 @@ def reward_function(params):
     #check speed
     reward += (params['speed']/10)*SpeedIncentive
     
+    
+    
+    
+    
+    #now adjust down or up based on being in the best state possible for track condition
+    #i.e reward being on left of track if entering a right corner
+    #reward being on right of track if entering a left corner 
+    #reward going slow through and into corners
+    #reward steering in corners
+    #reward going fast on exit of turn if steering is low and on inside
+    #reward going fast and central on straights with low steering
+    
+    
+    
+    
+    
     return reward
     
 
@@ -225,13 +230,13 @@ def get_test_params():
     return {
         'x': 0.7,
         'y': 1.05,
-        'is_left_of_center': False,
-        'speed': 1.44,
+        'is_left_of_center': True,
+        'speed': 0.8,
         'heading': 160.0,
         'track_width': 0.45,
         'is_reversed': False,
-        'steering_angle': -30.0,
-        'closest_waypoints': [110, 111],
+        'steering_angle': 0.0,
+        'closest_waypoints': [228, 229],
         'waypoints': [[-0.5438075065612793,
   -4.263250946998596,
   -0.543795108795166,
@@ -1624,4 +1629,4 @@ def test_reward():
 
     assert reward > 0.0	    
 	    
-test_reward()	    
+#test_reward()	    
