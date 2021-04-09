@@ -144,45 +144,48 @@ def reward_function(params):
         if TrackCondition[iStraights+1] >= SOFT_RIGHT:
             #move to left of centre
             RightIncentive = 0
-            LeftIncentive = 1
+            LeftIncentive = .33
         if TrackCondition[iStraights+1] <= SOFT_LEFT:
             #move to right of centre
-            RightIncentive = 1
+            RightIncentive = .33
             LeftIncentive = 0
                 
     #in a turn            
     if TrackCondition[0] != STRAIGHT:
-        #steering is good and want to be a bit slower
+        #steering is good and want to be a slower
         SpeedIncentive = 0
         SteerIncentive = 1
         #about to exit so start powering up
         if TrackCondition[1] == STRAIGHT:
-            #SpeedIncentive = 2
-            #SteerIncentive = 0.5 #also reduce steering as can adjust on the straight
-            if TrackCondition[1] >= SOFT_RIGHT:
+            if TrackCondition[0] >= SOFT_RIGHT:
                 #move to right of centre
-                RightIncentive = 1
+                RightIncentive = .5
                 LeftIncentive = 0
-            if TrackCondition[1] <= SOFT_LEFT:
+            if TrackCondition[0] <= SOFT_LEFT:
                 #move to left of centre
                 RightIncentive = 0
-                LeftIncentive = 1
+                LeftIncentive = 0.5
                 
         
     
-    #start with 1 for being on the track - good job
-    reward = 1
+    #start with 0.01 for being on the track - good job
+    reward = 0.01
     #check steering magnitude and direction
     #print(params['steering_angle']) -ve is right, +ve is left
     
-    #
+    
+    
+    
+    #If steering hard gotta have a good reason and especially need to be going slow
     if abs(params['steering_angle'])>(HARD_TURN_MAG):
         if (TrackCondition[0] >= HARD_RIGHT) and (params['steering_angle']<0):
             reward+=SteerIncentive
         if (TrackCondition[0] <= HARD_LEFT) and (params['steering_angle']>0):
             reward+=SteerIncentive
+        if params['speed']>1:
+            reward = 0.0001 #only hard steer if going slow
     
-    
+    #Soft turning aint bad 
     if (abs(params['steering_angle'])>(SOFT_TURN_MAG)) and (abs(params['steering_angle'])<(HARD_TURN_MAG)):
         if (TrackCondition[0] >= SOFT_RIGHT) and (params['steering_angle']<0):
             reward+=SteerIncentive
@@ -193,7 +196,7 @@ def reward_function(params):
     #If no steeringpreferred go for it big if straight
     if abs(params['steering_angle'])<SOFT_TURN_MAG:
         if SteerIncentive == 0:
-            reward+=1
+            reward += (params['speed'])*SpeedIncentive
         
     
     #check position
@@ -203,8 +206,8 @@ def reward_function(params):
     if LeftIncentive > 0:
         if params['is_left_of_center']:
             reward+=LeftIncentive
-    #check speed
-    reward += (params['speed']/10)*SpeedIncentive
+
+ 
     
     
     
